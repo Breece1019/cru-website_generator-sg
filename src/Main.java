@@ -16,7 +16,8 @@ public class Main {
             doc = Jsoup.parse(input, "UTF-8");
             Model model = new Model(doc);
             model.parse();
-            model.renameRegion("South Campus Men", "New South Campus Men");
+            model.renameRegion("South Campus Women", "The Gorls (South)");
+            model.renameStudy("Park-Stradley", "Sus on 42nd Street!", "South Campus Women");
 
             writer = new FileWriter(output);
             writer.write(doc.outerHtml());

@@ -1,27 +1,30 @@
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Model {
-    Document doc;
+    private Document doc;
+    private Map<String, Region> RegionList = new HashMap<>();
 
     Model(Document doc) {
         this.doc = doc;
+        parse(this.doc);
     }
 
-    void parse() {
+    private void parse(Document doc) {
         Elements regions = doc.select("div[class=\"panel panel-default\"]");
         for (Element r : regions) {
-            System.out.println(r.selectFirst("a[class=\"accordion-toggle\"]").text());   // Print Region Name
+            // System.out.println("DEBUG: " + r.selectFirst("a[class=\"accordion-toggle\"]").text());   // Print Region Name
+            Region reg = new Region(r);
+            this.RegionList.put(r.selectFirst("a[class=\"accordion-toggle\"]").text(), reg);
 
             Elements studyList = r.select("div[class=\"study\"]");
             for (Element study : studyList) {
-                System.out.println("\t" + study.selectFirst("dt").text()); // Print Study Name
-
-                Elements ddTags = study.select("dd");
-                for (Element dd : ddTags) {
-                    System.out.println("\t\t" + dd.text()); // Print Details
-                }
+                // System.out.println("\t" + study.selectFirst("dt").text()); // Print Study Name
+                reg.addStudy(new Study(study));
             }
         }
     }
@@ -71,7 +74,7 @@ public class Model {
             if (s.selectFirst("dt").text().equals(studyName)) {
                 System.out.println("DEBUG Found Element: " + studyName + " of " + regionName);
             }
-            study = s.selectFirst("dt");
+            study = s;
         }
 
         if (study == null) {

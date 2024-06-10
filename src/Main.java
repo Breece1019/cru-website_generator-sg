@@ -19,6 +19,7 @@ public class Main {
             model.renameStudy("Park-Stradley", "Sus on 42nd Street!", "South Campus Women");
             model.addStudyLeader("- Malik Sesay", "Baker East/West", "South Campus Men");
             model.removeStudyLeader("Adam Joehelin","Baker East/West", "South Campus Men");
+            model.addRegion("The Nether");
 
             writer = new FileWriter(output);
             writer.write(model.getDoc().outerHtml());

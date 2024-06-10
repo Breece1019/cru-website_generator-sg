@@ -37,6 +37,11 @@ public class Study {
         return this.whenAndWhere;
     }
 
+    void setWhenAndWhere(String waw) {
+        this.whenAndWhere = waw;
+        doc.selectFirst(root).selectFirst("dd[class\"whenandwhere\"]").text(waw);
+    }
+
     List<String> getLeaders() {
         return this.leaders;
     }

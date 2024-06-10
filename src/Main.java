@@ -17,6 +17,7 @@ public class Main {
             Model model = new Model(doc);
             model.renameRegion("South Campus Women", "The Gorls (South)");
             model.renameStudy("Park-Stradley", "Sus on 42nd Street!", "South Campus Women");
+            model.addStudyLeader("- Malik Sesay", "Baker East/West", "South Campus Men");
 
             writer = new FileWriter(output);
             writer.write(model.getDoc().outerHtml());

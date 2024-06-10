@@ -45,10 +45,10 @@ public class Model {
         }
     }
 
-    void addStudyLeader(String oldName, String newName, String regionName) {
+    void addStudyLeader(String newLeader, String studyName, String regionName) {
         Region region = RegionList.get(regionName);
         if (region != null) {
-            region.getStudy(regionName).addLeader(regionName);
+            region.getStudy(studyName).addLeader(newLeader);
         }
     }
 }

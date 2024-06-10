@@ -1,16 +1,19 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class Study {
-    private Element root;
+    private String root;
+    private Document doc;
     private String name;
     private String whenAndWhere;
     private List<String> leaders;
 
-    Study (Element root) {
-        this.root = root;
+    Study (Element root, Document doc) {
+        this.root = root.cssSelector();
+        this.doc = doc;
         this.name = root.selectFirst("dt").text();
         Element temp = root.selectFirst("dd[class=\"whenandwhere\"]");
         this.whenAndWhere = (temp != null) ? temp.text() : "ERROR: NO LOCATION!! (error for now)";
@@ -21,12 +24,13 @@ public class Study {
         }
     }
 
-    Element getElement() {
-        return this.root;
-    }
-
     String getName() {
         return this.name;
+    }
+
+    void setName(String newName) {
+        this.name = newName;
+        this.doc.selectFirst(this.root).selectFirst("dt").text(newName);
     }
 
     String getWhenAndWhere() {
@@ -37,18 +41,13 @@ public class Study {
         return this.leaders;
     }
 
-    // Still not sure if this is just easier than changing the document itself. I think it is.
-    String toHTML() {
-        String ret = "<div class=\"study\">\n";
-        ret = ret.concat("\t<dt><h3>" + this.name + "</h3></dt>\n");
-        if (!this.whenAndWhere.equals("")) {
-            ret = ret.concat("\t<dd class=\"whenandwhere\">" + this.whenAndWhere + "</dd>\n");
-        }
-        for (String leader : this.leaders) {
-            ret = ret.concat("\t<dd class=\"leader\">" + leader + "</dd>\n");
-        }
-        ret = ret.concat("</div>");
+    void addLeader(String leader) {
+        this.leaders.add(leader);
+        Element newLeader = new Element("dd").addClass("leader").text(leader);
+        this.doc.selectFirst(root).appendChild(newLeader);
+    }
 
-        return ret;
+    boolean removeLeader(String leader) {
+        return this.leaders.remove(leader);
     }
 }

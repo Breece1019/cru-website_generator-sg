@@ -51,4 +51,11 @@ public class Model {
             region.getStudy(studyName).addLeader(newLeader);
         }
     }
+
+    void removeStudyLeader(String leader, String studyName, String regionName) {
+        Region region = RegionList.get(regionName);
+        if (region != null) {
+            region.getStudy(studyName).removeLeader(leader);
+        }
+    }
 }

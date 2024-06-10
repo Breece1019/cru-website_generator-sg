@@ -48,6 +48,11 @@ public class Study {
     }
 
     boolean removeLeader(String leader) {
+        for (Element e : doc.selectFirst(root).select("dd")) {
+            if (e.text().contains(leader)) {
+                e.remove();
+            }
+        }
         return this.leaders.remove(leader);
     }
 }

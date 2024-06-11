@@ -54,6 +54,8 @@ public class Model {
         Region reg = RegionList.get(oldName);
         if (reg != null) {
             reg.setName(newName);
+            this.RegionList.remove(oldName);
+            this.RegionList.put(newName, reg);
         }
     }
 

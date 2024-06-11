@@ -21,6 +21,8 @@ public class Main {
             model.removeStudyLeader("Adam Joehelin","Baker East/West", "South Campus Men");
             model.removeRegion("South Campus Women");
             model.addRegion("The Nether");
+            model.getRegion("The Nether").createStudy("Base");
+            model.getRegion("The Nether").getStudy("Base").addLeader("- Herobrine");
 
 
             writer = new FileWriter(output);

@@ -44,6 +44,10 @@ public class Model {
         RegionList.put(regionName, new Region(newRegion, this.doc));
     }
 
+    void removeRegion(String regionName) {
+        this.doc.selectFirst(this.RegionList.get(regionName).cssSelector()).remove();
+    }
+
     void renameRegion(String oldName, String newName) {
         Region reg = RegionList.get(oldName);
         if (reg != null) {

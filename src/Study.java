@@ -30,7 +30,7 @@ public class Study {
 
     void setName(String newName) {
         this.name = newName;
-        this.doc.selectFirst(this.root).selectFirst("dt").text(newName);
+        this.doc.selectFirst(this.root).selectFirst("dt").selectFirst("h3").text(newName);
     }
 
     String getWhenAndWhere() {

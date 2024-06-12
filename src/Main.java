@@ -28,6 +28,7 @@ public class Main {
             model.moveRegionXbeforeY(model.getRegion("The Nether"), model.getRegion("Greek Women"));
 
 
+            model.fixCollapseIDs();
             writer = new FileWriter(output);
             writer.write(model.getDoc().outerHtml());
             writer.close();

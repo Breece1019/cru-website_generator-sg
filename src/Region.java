@@ -9,14 +9,12 @@ public class Region {
     private Element root;
     private Document doc;
     private String name;
-    private int collapseID;
     private Map<String, Study> studies;
 
     Region(Element region, Document doc) {
         this.root = region;
         this.doc = doc;
         this.name = region.selectFirst("a[class=\"accordion-toggle\"]").text();
-        this.collapseID = Integer.parseInt(region.selectFirst("a[class=\"accordion-toggle\"]").attr("href").substring(9));
         //System.out.println("DEBUG: collapseID = " + collapseID);
         this.studies = new HashMap<>();
     }
@@ -40,16 +38,6 @@ public class Region {
     void setName(String newName) {
         this.name = newName;
         this.doc.selectFirst(this.root.cssSelector()).selectFirst("a[class=\"accordion-toggle\"]").text(newName);
-    }
-
-    int getCollapseID() {
-        return this.collapseID;
-    }
-
-    void setCollapseID(int newID) {
-        // TODO this
-        //this.collapseID;
-        this.doc.selectFirst("a[class=\"accordion-toggle\"]").attr("href");
     }
 
     void addStudy(Study study) {

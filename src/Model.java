@@ -53,7 +53,7 @@ public class Model {
         return this.regionList.get(regionName);
     }
 
-    void addRegion(String regionName) {
+    void createRegion(String regionName) {
         int i = getFirstFalseIndex(this.collapseIDMemory);
         this.collapseIDMemory[i] = true;
         // I know this looks super gross but it works, maybe I will change it later
@@ -61,6 +61,25 @@ public class Model {
         Element newRegion = Jsoup.parseBodyFragment(html, "UTF-8").selectFirst("div[class=\"panel panel-default\"]");
         this.doc.selectFirst("div[id=\"accordion\"]").appendChild(newRegion);
         regionList.put(regionName, new Region(newRegion, this.doc));
+    }
+
+    void insertRegion(int collapseID) {
+        boolean shifted = false;
+        Element e;
+        for (Region r : this.regionList.values()) {
+            if (r.getCollapseID() == collapseID) {
+                shifted = true;
+            }
+            if (shifted) {
+                // TODO shift every element after found
+                r.setCollapseID(r.getCollapseID() + 1);
+            }
+            // TODO actually insert the new element
+        }
+    }
+
+    void moveRegionXbeforeY(Region X, Region Y) {
+        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(X.getElement());
     }
 
     void removeRegion(String regionName) {
@@ -97,5 +116,10 @@ public class Model {
         if (region != null) {
             region.getStudy(studyName).removeLeader(leader);
         }
+    }
+
+    void restructureCollapseIDs() {
+        // TODO here
+        // this will be called right before a new file is generated
     }
 }

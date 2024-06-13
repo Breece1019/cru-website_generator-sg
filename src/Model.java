@@ -8,15 +8,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 public class Model {
-    private File input;
     private Document doc;
     private Map<String, Region> regionList;
 
-    Model(String filename) {
-        this.input = new File("testFull.html");
+    Model(File file) {
         this.regionList = new HashMap<>();
         try {
-            this.doc = Jsoup.parse(input, "UTF-8");
+            this.doc = Jsoup.parse(file, "UTF-8");
             parse(this.doc);
         } catch (IOException e) {
             System.out.println("ERROR: Could not process file.");

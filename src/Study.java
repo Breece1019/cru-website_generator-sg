@@ -5,14 +5,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class Study {
-    private String root;
+    private Element root;
     private Document doc;
     private String name;
     private String whenAndWhere;
     private List<String> leaders;
 
     Study (Element root, Document doc) {
-        this.root = root.cssSelector();
+        this.root = root;
         this.doc = doc;
         this.name = root.selectFirst("dt").text();
         Element temp = root.selectFirst("dd[class=\"whenandwhere\"]");
@@ -28,9 +28,13 @@ public class Study {
         return this.name;
     }
 
+    String cssSelector() {
+        return root.cssSelector();
+    }
+
     void setName(String newName) {
         this.name = newName;
-        this.doc.selectFirst(this.root).selectFirst("dt").selectFirst("h3").text(newName);
+        this.doc.selectFirst(this.root.cssSelector()).selectFirst("dt").selectFirst("h3").text(newName);
     }
 
     String getWhenAndWhere() {
@@ -39,7 +43,7 @@ public class Study {
 
     void setWhenAndWhere(String waw) {
         this.whenAndWhere = waw;
-        doc.selectFirst(root).selectFirst("dd[class\"whenandwhere\"]").text(waw);
+        doc.selectFirst(this.root.cssSelector()).selectFirst("dd[class\"whenandwhere\"]").text(waw);
     }
 
     List<String> getLeaders() {
@@ -49,11 +53,11 @@ public class Study {
     void addLeader(String leader) {
         this.leaders.add(leader);
         Element newLeader = new Element("dd").addClass("leader").text(leader);
-        this.doc.selectFirst(root).appendChild(newLeader);
+        this.doc.selectFirst(this.root.cssSelector()).appendChild(newLeader);
     }
 
     boolean removeLeader(String leader) {
-        for (Element e : doc.selectFirst(root).select("dd")) {
+        for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
             if (e.text().contains(leader)) {
                 e.remove();
             }

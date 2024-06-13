@@ -19,10 +19,6 @@ public class Region {
         this.studies = new HashMap<>();
     }
 
-    Element getElement() {
-        return this.root;
-    }
-
     String cssSelector() {
         return root.cssSelector();
     }
@@ -54,6 +50,14 @@ public class Region {
 
     Study removeStudy(String studyName) {
         return this.studies.remove(studyName);
+    }
+
+    void moveStudyXbeforeY(Study X, Study Y) {
+        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(this.doc.selectFirst(X.cssSelector()));
+    }
+
+    void moveStudyXafterY(Study X, Study Y) {
+        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").after(this.doc.selectFirst(X.cssSelector()));
     }
 
     void renameStudy(String oldName, String newName) {

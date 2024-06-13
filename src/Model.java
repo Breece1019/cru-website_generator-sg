@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,13 +8,19 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 public class Model {
+    private File input;
     private Document doc;
     private Map<String, Region> regionList;
 
-    Model(Document doc) {
-        this.doc = doc;
+    Model(String filename) {
+        this.input = new File("testFull.html");
         this.regionList = new HashMap<>();
-        parse(this.doc);
+        try {
+            this.doc = Jsoup.parse(input, "UTF-8");
+            parse(this.doc);
+        } catch (IOException e) {
+            System.out.println("ERROR: Could not process file.");
+        }
     }
 
     private void parse(Document doc) {
@@ -29,8 +37,8 @@ public class Model {
         }
     }
 
-    Document getDoc() {
-        return this.doc;
+    String getHtml() {
+        return this.doc.outerHtml();
     }
 
     Region getRegion(String regionName) {
@@ -46,7 +54,11 @@ public class Model {
     }
 
     void moveRegionXbeforeY(Region X, Region Y) {
-        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(X.getElement());
+        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(this.doc.selectFirst(X.cssSelector()));
+    }
+
+    void moveRegionXafterY(Region X, Region Y) {
+        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").after(this.doc.selectFirst(X.cssSelector()));
     }
 
     void removeRegion(String regionName) {

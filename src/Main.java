@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -44,6 +45,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cru Website Generator");
+        primaryStage.getIcons().add(new Image("file:data/cru-logo.png"));
         button = new Button("Testing 1 2 3");
 
         StackPane layout = new StackPane();

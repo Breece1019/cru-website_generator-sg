@@ -60,7 +60,11 @@ public class Model {
         return details;
     }
 
-    void createRegion(String regionName) {
+    void addRegion(Region region) {
+        this.regionList.put(region.getName(), region);
+    }
+
+    void addRegion(String regionName) {
         // I know this looks super gross but it works, maybe I will change it later
         String html = "<div class=\"panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\"><a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse\">" + regionName + "</a></h4></div><div id=\"collapse\" class=\"panel-collapse collapse\"><div class=\"panel-body\"><dl></dl></div></div></div>";
         Element newRegion = Jsoup.parseBodyFragment(html, "UTF-8").selectFirst("div[class=\"panel panel-default\"]");

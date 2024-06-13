@@ -45,7 +45,7 @@ public class Region {
         this.studies.put(study.getName(), study);
     }
 
-    void createStudy(String studyName) {
+    void addStudy(String studyName) {
         String html = "<div class=\"study\"><dt><h3>" + studyName + "</h3></dt></div>";
         Element e = Jsoup.parseBodyFragment(html, "UTF-8").selectFirst("div[class=\"study\"]");
         //System.out.println(e);

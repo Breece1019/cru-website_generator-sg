@@ -27,7 +27,7 @@ public class Main extends Application {
         // model.addStudyLeader("- Malik Sesay", "Baker East/West", "South Campus Men");
         // model.removeStudyLeader("Adam Joehelin","Baker East/West", "South Campus Men");
         // model.removeRegion("Greek Men");
-        // model.createRegion("The Nether");
+        // model.addRegion("The Nether");
         // model.getRegion("The Nether").createStudy("Base");
         // model.getRegion("The Nether").getStudy("Base").addLeader("- Herobrine");
         // model.moveRegionXbeforeY(model.getRegion("The Nether"), model.getRegion("Greek Women"));

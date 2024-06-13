@@ -3,9 +3,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,10 +19,6 @@ public class Main extends Application {
     private Scene loadScene; // first scene
     public static void main(String[] args) {
         launch(args);
-
-        // File output = new File("output.html");
-        // FileWriter writer;
-
         // Model model = new Model("testFull.html");
         // model.renameRegion("South Campus Women", "The Gorls (South)");
         // model.renameStudy("Park-Stradley", "Sus on 42nd Street!", "The Gorls (South)");
@@ -29,16 +29,6 @@ public class Main extends Application {
         // model.getRegion("The Nether").createStudy("Base");
         // model.getRegion("The Nether").getStudy("Base").addLeader("- Herobrine");
         // model.moveRegionXbeforeY(model.getRegion("The Nether"), model.getRegion("Greek Women"));
-
-        // try {
-        //     model.fixCollapseIDs();
-        //     writer = new FileWriter(output);
-        //     writer.write(model.getHtml());
-        //     writer.close(); 
-        // } catch (IOException e) {
-        //     System.out.println("ERROR: Could not write to file.");
-        // }
-         
     }
 
     @Override
@@ -54,6 +44,8 @@ public class Main extends Application {
     private Scene setLoadScene() {
         StackPane loadLayout = new StackPane();
         Button loadButton = new Button("Load File");
+        loadButton.setPrefSize(150, 75);
+        loadButton.setStyle("-fx-font-size: 24px;");
         loadButton.setOnAction(event -> loadAndProcessFile(window));
         loadLayout.getChildren().add(loadButton);
         
@@ -75,11 +67,38 @@ public class Main extends Application {
     }
 
     private Scene setEditScene(Model model) {
+        BorderPane editLayout = new BorderPane();
+        editLayout.setBottom(setEditBottom(model));
+
+
+        return new Scene(editLayout, 1200, 900);        
+    }
+
+    private HBox setEditBottom(Model model) {
+        HBox editLayoutBottom = new HBox();
         Button cancelButton = new Button("Cancel");
+        Button generateButton = new Button("Generate");
+        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
         cancelButton.setOnAction(event -> window.setScene(loadScene));
-        StackPane layout2 = new StackPane();
-        layout2.getChildren().add(cancelButton);
-        
-        return new Scene(layout2, 800, 600);        
+        generateButton.setOnAction(event -> outputFile(model));
+        // Need to specify javafx Region to create a spacer
+        editLayoutBottom.setPadding(new Insets(10));
+        editLayoutBottom.getChildren().addAll(cancelButton, spacer, generateButton);
+
+        return editLayoutBottom;
+    }
+
+    private void outputFile(Model model) {
+        File output = new File("output.html");
+        FileWriter writer;
+        try {
+            model.fixCollapseIDs();
+            writer = new FileWriter(output);
+            writer.write(model.getHtml());
+            writer.close(); 
+        } catch (IOException e) {
+            System.out.println("ERROR: Could not write to file.");
+        }
     }
 }

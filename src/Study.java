@@ -16,7 +16,7 @@ public class Study {
         this.doc = doc;
         this.name = root.selectFirst("dt").text();
         Element temp = root.selectFirst("dd[class=\"whenandwhere\"]");
-        this.whenAndWhere = (temp != null) ? temp.text() : "ERROR: NO LOCATION!! (error for now)";
+        this.whenAndWhere = (temp != null) ? temp.text() : "Please email for more info";
         leaders = new ArrayList<>();
         for (Element leader : root.select("dd[class=\"leader\"]")) {
             // System.out.println("DEBUG: " + leader.html());

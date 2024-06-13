@@ -71,8 +71,14 @@ public class Main extends Application {
 
     private Scene setEditScene(Model model) {
         BorderPane editLayout = new BorderPane();
-        editLayout.setCenter(setEditCenter(model));
-        editLayout.setBottom(setEditBottom(model));
+        HBox bottomButtons = setEditBottom(model);
+
+        // Set up tree to be editable
+        TreeView<String> tree = setEditCenter(model);
+        tree.setShowRoot(false);
+        tree.setEditable(true);
+        editLayout.setCenter(tree);
+        editLayout.setBottom(bottomButtons);
 
 
         return new Scene(editLayout, 1200, 900);        
@@ -96,12 +102,18 @@ public class Main extends Application {
     private TreeView<String> setEditCenter(Model model) {
         TreeItem<String> root = new TreeItem<>();
         TreeItem<String> child;
+        TreeItem<String> grandchild;
         root.setExpanded(true);
+
         for (String region : model.getRegionNames()) {
             child = new TreeItem<String>(region);
             root.getChildren().add(child);
             for (String study : model.getStudyNames(region)) {
-                child.getChildren().add(new TreeItem<String>(study));
+                grandchild = new TreeItem<String>(study);
+                child.getChildren().add(grandchild);
+                for (String detail : model.getDetails(study, region)) {
+                    grandchild.getChildren().add(new TreeItem<String>(detail));
+                }
             }
         }
 

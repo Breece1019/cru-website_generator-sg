@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,6 +48,16 @@ public class Model {
 
     Set<String> getStudyNames(String regionName) {
         return this.regionList.get(regionName).getStudyNames();
+    }
+
+    List<String> getDetails(String studyName, String regionName) {
+        List<String> details = new ArrayList<>();
+        details.add(this.regionList.get(regionName).getStudy(studyName).getWhenAndWhere());
+        for (String leader : this.regionList.get(regionName).getStudy(studyName).getLeaders()) {
+            details.add(leader);
+        }
+
+        return details;
     }
 
     void createRegion(String regionName) {

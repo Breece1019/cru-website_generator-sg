@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,6 +26,10 @@ public class Region {
 
     Study getStudy(String studyName) {
         return this.studies.get(studyName);
+    }
+
+    Set<String> getStudyNames() {
+        return this.studies.keySet();
     }
 
     String getName() {

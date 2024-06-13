@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -69,6 +71,7 @@ public class Main extends Application {
 
     private Scene setEditScene(Model model) {
         BorderPane editLayout = new BorderPane();
+        editLayout.setCenter(setEditCenter(model));
         editLayout.setBottom(setEditBottom(model));
 
 
@@ -88,6 +91,21 @@ public class Main extends Application {
         editLayoutBottom.getChildren().addAll(cancelButton, spacer, generateButton);
 
         return editLayoutBottom;
+    }
+    
+    private TreeView<String> setEditCenter(Model model) {
+        TreeItem<String> root = new TreeItem<>();
+        TreeItem<String> child;
+        root.setExpanded(true);
+        for (String region : model.getRegionNames()) {
+            child = new TreeItem<String>(region);
+            root.getChildren().add(child);
+            for (String study : model.getStudyNames(region)) {
+                child.getChildren().add(new TreeItem<String>(study));
+            }
+        }
+
+        return new TreeView<>(root);
     }
 
     private void outputFile(Model model) {

@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,8 +40,12 @@ public class Model {
         return this.doc.outerHtml();
     }
 
-    Region getRegion(String regionName) {
-        return this.regionList.get(regionName);
+    Set<String> getRegionNames() {
+        return this.regionList.keySet();
+    }
+
+    Set<String> getStudyNames(String regionName) {
+        return this.regionList.get(regionName).getStudyNames();
     }
 
     void createRegion(String regionName) {

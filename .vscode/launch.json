@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "cru-website_generator-sg_5dcbd8be",
+            "vmArgs": "--module-path ./lib/javafx-sdk-21.0.3/lib --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}

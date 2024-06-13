@@ -17,9 +17,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
     private Stage window;
     private Scene loadScene; // first scene
+    private String fileName;
     public static void main(String[] args) {
         launch(args);
-        // Model model = new Model("testFull.html");
         // model.renameRegion("South Campus Women", "The Gorls (South)");
         // model.renameStudy("Park-Stradley", "Sus on 42nd Street!", "The Gorls (South)");
         // model.addStudyLeader("- Malik Sesay", "Baker East/West", "South Campus Men");
@@ -60,6 +60,7 @@ public class Main extends Application {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Downloads"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
         file = fileChooser.showOpenDialog(primaryStage);
+        this.fileName = file.getName();
         if (file != null) {
             model = new Model(file);
             primaryStage.setScene(setEditScene(model));
@@ -90,7 +91,7 @@ public class Main extends Application {
     }
 
     private void outputFile(Model model) {
-        File output = new File("output.html");
+        File output = new File(this.fileName.replace(".html", "") + "-output.html");
         FileWriter writer;
         try {
             model.fixCollapseIDs();

@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javafx.application.Application;
+
 public class Main {
     public static void main(String[] args) {
         // Parse the HTML file into document type

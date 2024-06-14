@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -74,7 +75,6 @@ public class Main extends Application {
         TextField userInputField = new TextField();
         userInputField.setPromptText("Enter new item name");
 
-        // Layout for user input
         VBox inputBox = new VBox(userInputField);
         inputBox.setVisible(false); // Initially hide the input box
 
@@ -143,7 +143,7 @@ public class Main extends Application {
 
         treeLayout.setStyle("-fx-font-size: 24px;");
         editLayout.setCenter(treeLayout);
-        //editLayout.setRight(inputBox);
+        editLayout.setLeft(setEditLeft(model));
         editLayout.setBottom(bottomButtons);
 
 
@@ -151,18 +151,40 @@ public class Main extends Application {
     }
 
     private HBox setEditBottom(Model model) {
-        HBox editLayoutBottom = new HBox();
+        HBox editLayoutBottom = new HBox(10);
         Button cancelButton = new Button("Cancel");
         Button generateButton = new Button("Generate");
-        javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Button addButton = new Button("Add");
+        Button removeButton = new Button("Remove");
+        editLayoutBottom.setStyle(("-fx-font-size: 20px;"));
+        // Need to specify javafx Region to create a spacer
+        javafx.scene.layout.Region spacer1 = new javafx.scene.layout.Region();
+        javafx.scene.layout.Region spacer2 = new javafx.scene.layout.Region();
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
         cancelButton.setOnAction(event -> window.setScene(loadScene));
         generateButton.setOnAction(event -> outputFile(model));
-        // Need to specify javafx Region to create a spacer
         editLayoutBottom.setPadding(new Insets(10));
-        editLayoutBottom.getChildren().addAll(cancelButton, spacer, generateButton);
+        editLayoutBottom.getChildren().addAll(cancelButton, spacer1, addButton, removeButton, spacer2, generateButton);
+        
 
         return editLayoutBottom;
+    }
+
+    private VBox setEditLeft(Model model) {
+        VBox editLayoutLeft = new VBox(100);
+        Button upButton = new Button("\u2191");
+        Button downButton = new Button("\u2193");
+        editLayoutLeft.setStyle("-fx-font-size: 26px;");
+        upButton.setPrefSize(50, 150);
+        downButton.setPrefSize(50, 150);
+
+
+        editLayoutLeft.setPadding(new Insets(10));
+        editLayoutLeft.getChildren().addAll(upButton, downButton);
+        editLayoutLeft.setAlignment(Pos.CENTER);
+
+        return editLayoutLeft;
     }
     
     private void outputFile(Model model) {

@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
     private Stage window;
     private Scene loadScene; // first scene
-    private String fileName;
     public static void main(String[] args) {
         launch(args);
         // model.renameRegion("South Campus Women", "The Gorls (South)");

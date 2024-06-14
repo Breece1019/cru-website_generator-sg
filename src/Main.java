@@ -3,16 +3,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -46,7 +50,7 @@ public class Main extends Application {
     private Scene setLoadScene() {
         StackPane loadLayout = new StackPane();
         Button loadButton = new Button("Load File");
-        loadButton.setPrefSize(150, 75);
+        loadButton.setPrefSize(150, 70);
         loadButton.setStyle("-fx-font-size: 24px;");
         loadButton.setOnAction(event -> loadAndProcessFile(window));
         loadLayout.getChildren().add(loadButton);
@@ -57,12 +61,10 @@ public class Main extends Application {
     private void loadAndProcessFile(Stage primaryStage) {
         File file;
         Model model;
-        System.out.println("test");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Downloads"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
         file = fileChooser.showOpenDialog(primaryStage);
-        this.fileName = file.getName();
         if (file != null) {
             model = new Model(file);
             primaryStage.setScene(setEditScene(model));
@@ -74,10 +76,84 @@ public class Main extends Application {
         HBox bottomButtons = setEditBottom(model);
 
         // Set up tree to be editable
-        TreeView<String> tree = setEditCenter(model);
+        TreeView<String> tree = model.getTreeView();
         tree.setShowRoot(false);
         tree.setEditable(true);
-        editLayout.setCenter(tree);
+
+        // Create a text field for user input
+        TextField userInputField = new TextField();
+        userInputField.setPromptText("Enter new item name");
+
+        // Layout for user input
+        VBox inputBox = new VBox(userInputField);
+        inputBox.setVisible(false); // Initially hide the input box
+
+        // Layout for the tree view and user input
+        VBox treeLayout = new VBox(tree, inputBox);
+        VBox.setVgrow(tree, Priority.ALWAYS);
+
+        // Event handling for "/" key to show input box
+        tree.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH && tree.getSelectionModel().getSelectedItem() != null) {
+                TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
+                userInputField.setText(selectedItem.getValue());
+                inputBox.setVisible(true);
+                
+                // Delay the focus request to avoid the "/" character being added
+                Platform.runLater(() -> {
+                    userInputField.requestFocus();
+                    userInputField.selectAll(); // Select all text so user can start typing immediately
+                });
+            }
+        });
+
+        // Event handling for "Enter" to update tree item
+        userInputField.setOnAction(event -> {
+            TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int height;
+                TreeItem<String> pathFinder = selectedItem.getParent();
+                for (height = 0; pathFinder != null; height++) { pathFinder = pathFinder.getParent(); }
+                switch (height) {
+                    case 1: // Region
+                        model.renameRegion(selectedItem.getValue(),
+                            userInputField.getText());
+                        break;
+                    case 2: // Study
+                        model.renameStudy(
+                            selectedItem.getValue(),
+                            userInputField.getText(),
+                            selectedItem.getParent().getValue());
+                        break;
+                    case 3: // Detail
+                        model.changeDetail(
+                            selectedItem.getValue(),
+                            userInputField.getText(),
+                            selectedItem.getParent().getValue(),
+                            selectedItem.getParent().getParent().getValue());
+                        break;
+                    default:
+
+                }
+                selectedItem.setValue(userInputField.getText());
+                inputBox.setVisible(false);
+                userInputField.clear();
+                tree.requestFocus(); // Return focus to the tree view
+            }
+        });
+
+        // Event handling for "Esc" to cancel the update
+        userInputField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                inputBox.setVisible(false);
+                userInputField.clear();
+                tree.requestFocus(); // Return focus to the tree view
+            }
+        });
+
+        treeLayout.setStyle("-fx-font-size: 24px;");
+        editLayout.setCenter(treeLayout);
+        //editLayout.setRight(inputBox);
         editLayout.setBottom(bottomButtons);
 
 
@@ -99,37 +175,23 @@ public class Main extends Application {
         return editLayoutBottom;
     }
     
-    private TreeView<String> setEditCenter(Model model) {
-        TreeItem<String> root = new TreeItem<>();
-        TreeItem<String> child;
-        TreeItem<String> grandchild;
-        root.setExpanded(true);
-
-        for (String region : model.getRegionNames()) {
-            child = new TreeItem<String>(region);
-            root.getChildren().add(child);
-            for (String study : model.getStudyNames(region)) {
-                grandchild = new TreeItem<String>(study);
-                child.getChildren().add(grandchild);
-                for (String detail : model.getDetails(study, region)) {
-                    grandchild.getChildren().add(new TreeItem<String>(detail));
-                }
-            }
-        }
-
-        return new TreeView<>(root);
-    }
-
     private void outputFile(Model model) {
-        File output = new File(this.fileName.replace(".html", "") + "-output.html");
+        //File output = new File(this.fileName.replace(".html", "") + "-output.html");
         FileWriter writer;
-        try {
-            model.fixCollapseIDs();
-            writer = new FileWriter(output);
-            writer.write(model.getHtml());
-            writer.close(); 
-        } catch (IOException e) {
-            System.out.println("ERROR: Could not write to file.");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Downloads"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
+        model.fixCollapseIDs();
+        File output = fileChooser.showSaveDialog(window);
+        if (output != null) {
+            try {
+                writer = new FileWriter(output);
+                writer.write(model.getHtml());
+                writer.close(); 
+            } catch (IOException e) {
+                System.out.println("ERROR: Could not write to file.");
+            }
         }
     }
 }

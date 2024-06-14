@@ -10,8 +10,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 public class Model {
     private Document doc;
+    private TreeView<String> tree;  // putting this here for the sake of order
+                                    //I am NOT about to change all Map structs
     private Map<String, Region> regionList;
 
     Model(File file) {
@@ -25,17 +30,35 @@ public class Model {
     }
 
     private void parse(Document doc) {
+        TreeItem<String> root = new TreeItem<>();
+        TreeItem<String> child;
+        TreeItem<String> grandchild;
+        root.setExpanded(true);
+
         Elements regions = doc.select("div[class=\"panel panel-default\"]");
         for (Element r : regions) {
             Region reg = new Region(r, this.doc);
             this.regionList.put(r.selectFirst("a[class=\"accordion-toggle\"]").text(), reg);
-            //System.out.println("DEBUG: " + this.collapseIDMemory.size());
+            child = new TreeItem<>(reg.getName());
+            root.getChildren().add(child);
 
             Elements studyList = r.select("div[class=\"study\"]");
-            for (Element study : studyList) {
-                reg.addStudy(new Study(study, this.doc));
+            for (Element s : studyList) {
+                Study study = new Study(s, this.doc);
+                reg.addStudy(study);
+                grandchild = new TreeItem<>(study.getName());
+                child.getChildren().add(grandchild);
+                for (String detail : getDetails(study.getName(), reg.getName())) {
+                    grandchild.getChildren().add(new TreeItem<String>(detail));
+                }
             }
         }
+
+        tree = new TreeView<>(root);
+    }
+
+    TreeView<String> getTreeView() {
+        return this.tree;
     }
 
     String getHtml() {
@@ -95,9 +118,19 @@ public class Model {
     }
 
     void renameStudy(String oldName, String newName, String regionName) {
-        Region region = regionList.get(regionName);
+        Region region = this.regionList.get(regionName);
         if (region != null) {
             region.renameStudy(oldName, newName);
+        }
+    }
+
+    void changeDetail(String oldDetail, String newDetail, String studyName, String regionName) {
+        Region region = this.regionList.get(regionName);
+        if (region != null) {
+            Study study = region.getStudy(studyName);
+            if (study != null) {
+                study.changeDetail(oldDetail, newDetail);
+            }
         }
     }
 

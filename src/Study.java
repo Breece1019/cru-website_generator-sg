@@ -66,8 +66,8 @@ public class Study {
     }
 
     void changeDetail(String oldDetail, String newDetail) {
-        for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
-            if (e.text().contains(oldDetail)) {
+        for (Element e : doc.select(this.root.cssSelector()).select("dd")) {
+            if (e.html().contains(oldDetail)) {
                 e.text(newDetail);
             }
         }

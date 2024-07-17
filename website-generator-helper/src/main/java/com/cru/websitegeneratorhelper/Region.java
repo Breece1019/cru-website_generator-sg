@@ -56,6 +56,11 @@ public class Region {
     }
 
     Study removeStudy(String studyName) {
+        for (Element e : doc.selectFirst(this.root.cssSelector()).select("div.study")) {
+            if (e.text().contains(studyName)) {
+                e.remove();
+            }
+        }
         return this.studies.remove(studyName);
     }
 

@@ -71,6 +71,10 @@ public class Model {
         return this.regionList.keySet();
     }
 
+    Region getRegion(String name) {
+        return regionList.get(name);
+    }
+
     Set<String> getStudyNames(String regionName) {
         return this.regionList.get(regionName).getStudyNames();
     }
@@ -140,13 +144,6 @@ public class Model {
         Region region = regionList.get(regionName);
         if (region != null) {
             region.getStudy(studyName).addLeader(newLeader);
-        }
-    }
-
-    void removeStudyLeader(String leader, String studyName, String regionName) {
-        Region region = regionList.get(regionName);
-        if (region != null) {
-            region.getStudy(studyName).removeLeader(leader);
         }
     }
 

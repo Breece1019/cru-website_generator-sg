@@ -58,13 +58,15 @@ public class Study {
         this.doc.selectFirst(this.root.cssSelector()).appendChild(newLeader);
     }
 
-    boolean removeLeader(String leader) {
+    //TODO
+    boolean removeDetail(String detail) {
         for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
-            if (e.text().contains(leader)) {
+            System.out.println(e.html());
+            if (e.text().equals(detail)) {
                 e.remove();
             }
         }
-        return this.leaders.remove(leader);
+        return this.leaders.remove(detail);
     }
 
     void changeDetail(String oldDetail, String newDetail) {

@@ -103,10 +103,7 @@ public class Main extends Application {
         userInputField.setOnAction(event -> {
             TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-                int height;
-                TreeItem<String> pathFinder = selectedItem.getParent();
-                for (height = 0; pathFinder != null; height++) { pathFinder = pathFinder.getParent(); }
-                switch (height) {
+                switch (getHeight(selectedItem)) {
                     case 1: // Region
                         model.renameRegion(selectedItem.getValue(),
                             userInputField.getText());
@@ -166,6 +163,29 @@ public class Main extends Application {
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         cancelButton.setOnAction(event -> window.setScene(loadScene));
         generateButton.setOnAction(event -> outputFile(model));
+
+        removeButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                switch (getHeight(selectedItem)) {
+                    case 1: // Region
+                        model.removeRegion(selectedItem.getValue());
+                        break;
+                    case 2: // Study
+                        model.getRegion(selectedItem.getParent().getValue())
+                        .removeStudy(selectedItem.getValue());
+                        break;
+                    case 3: // Detail TODO
+                        // model.getRegion(selectedItem.getParent().getParent().getValue())
+                        // .getStudy(selectedItem.getParent().getValue())
+                        // .removeDetail(selectedItem.getValue());
+                        break;
+                    default:
+                }
+                selectedItem.getParent().getChildren().remove(selectedItem);
+            }
+        });
+
         editLayoutBottom.setPadding(new Insets(10));
         editLayoutBottom.getChildren().addAll(cancelButton, spacer1, addButton, removeButton, spacer2, generateButton);
         
@@ -207,5 +227,13 @@ public class Main extends Application {
                 System.out.println("ERROR: Could not write to file.");
             }
         }
+    }
+
+    private int getHeight(TreeItem<String> tItem) {
+        int height;
+        TreeItem<String> pathFinder = tItem.getParent();
+        for (height = 0; pathFinder != null; height++) { pathFinder = pathFinder.getParent(); }
+
+        return height;
     }
 }

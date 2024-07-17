@@ -1,0 +1,4 @@
+/website-generator-helper/target/maven-archiver/
+/website-generator-helper/target/maven-status/
+/website-generator-helper/target/classes/com/cru/websitegeneratorhelper/*
+/website-generator-helper/target/website-generator-helper*.jar

@@ -193,7 +193,7 @@ public class Main extends Application {
 
                         selectedItem.getChildren().add(new TreeItem<>(newString));
                         break;
-                    case 3: // Detail TODO add whenandwhere
+                    case 3: // Detail
                         newString = "- New Leader <a href=\"mailto:example@osu.edu\">example@osu.edu</a>";
                         study = model.getRegion(selectedItem.getParent().getParent().getValue())
                             .getStudy(selectedItem.getParent().getValue());

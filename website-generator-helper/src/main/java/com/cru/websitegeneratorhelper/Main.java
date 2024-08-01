@@ -3,9 +3,11 @@ package com.cru.websitegeneratorhelper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -249,6 +251,29 @@ public class Main extends Application {
         upButton.setPrefSize(50, 150);
         downButton.setPrefSize(50, 150);
 
+        upButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
+                if (i > 0) {
+                    Collections.swap(selectedItem.getParent().getChildren(), i, i - 1);
+                    model.getTreeView().getSelectionModel().select(selectedItem);
+                }
+                
+            }
+        });
+
+        downButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
+                if (i < selectedItem.getParent().getChildren().size() - 1) {
+                    Collections.swap(selectedItem.getParent().getChildren(), i, i + 1);
+                    model.getTreeView().getSelectionModel().select(selectedItem);
+                }
+                
+            }
+        });
 
         editLayoutLeft.setPadding(new Insets(10));
         editLayoutLeft.getChildren().addAll(upButton, downButton);

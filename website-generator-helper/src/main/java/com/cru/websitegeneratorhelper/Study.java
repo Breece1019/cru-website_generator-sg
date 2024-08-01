@@ -28,17 +28,12 @@ public class Study {
         }
         leaders = new ArrayList<>();
         for (Element leader : root.select("dd[class=\"leader\"]")) {
-            // System.out.println("DEBUG: " + leader.html());
             leaders.add(leader.html());
         }
     }
 
     String getName() {
         return this.name;
-    }
-
-    String cssSelector() {
-        return root.cssSelector();
     }
 
     void setName(String newName) {

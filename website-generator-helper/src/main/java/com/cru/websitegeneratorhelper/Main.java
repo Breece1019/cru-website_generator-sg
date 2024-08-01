@@ -301,7 +301,6 @@ public class Main extends Application {
         fileChooser.setTitle("Save");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Downloads"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
-        model.fixCollapseIDs();
         File output = fileChooser.showSaveDialog(window);
         if (output != null) {
             try {

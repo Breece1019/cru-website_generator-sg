@@ -63,25 +63,12 @@ public class Model {
     }
 
     String getHtml() {
+        fixCollapseIDs();
         return this.doc.outerHtml();
     }
 
     Region getRegion(String name) {
         return regionList.get(name);
-    }
-
-    private List<String> getDetails(String studyName, String regionName) {
-        List<String> details = new ArrayList<>();
-        details.add(this.regionList.get(regionName).getStudy(studyName).getWhenAndWhere());
-        for (String leader : this.regionList.get(regionName).getStudy(studyName).getLeaders()) {
-            details.add(leader);
-        }
-
-        return details;
-    }
-
-    void addRegion(Region region) {
-        this.regionList.put(region.getName(), region);
     }
 
     void addRegion(String regionName) {
@@ -109,14 +96,6 @@ public class Model {
         }
     }
 
-    void moveRegionXbeforeY(Region X, Region Y) {
-        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(this.doc.selectFirst(X.cssSelector()));
-    }
-
-    void moveRegionXafterY(Region X, Region Y) {
-        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").after(this.doc.selectFirst(X.cssSelector()));
-    }
-
     void removeRegion(String regionName) {
         Region region = this.regionList.get(regionName);
         this.doc.selectFirst(region.cssSelector()).remove();
@@ -131,21 +110,17 @@ public class Model {
         }
     }
 
-    void renameStudy(String oldName, String newName, String regionName) {
-        Region region = this.regionList.get(regionName);
-        if (region != null) {
-            region.renameStudy(oldName, newName);
+    private List<String> getDetails(String studyName, String regionName) {
+        List<String> details = new ArrayList<>();
+        details.add(this.regionList.get(regionName).getStudy(studyName).getWhenAndWhere());
+        for (String leader : this.regionList.get(regionName).getStudy(studyName).getLeaders()) {
+            details.add(leader);
         }
+
+        return details;
     }
 
-    void addStudyLeader(String newLeader, String studyName, String regionName) {
-        Region region = regionList.get(regionName);
-        if (region != null) {
-            region.getStudy(studyName).addLeader(newLeader);
-        }
-    }
-
-    void fixCollapseIDs() {
+    private void fixCollapseIDs() {
         // this will be called right before a new file is generated
         int i = 1;
         for (Element e : this.doc.select("div.panel.panel-default")) {

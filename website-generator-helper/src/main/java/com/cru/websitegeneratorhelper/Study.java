@@ -45,7 +45,7 @@ public class Study {
 
     void setWhenAndWhere(String waw) {
         this.whenAndWhere = waw;
-        doc.selectFirst(this.root.cssSelector()).selectFirst("dd[class\"whenandwhere\"]").text(waw);
+        doc.selectFirst(this.root.cssSelector()).selectFirst("dd[class=\"whenandwhere\"]").text(waw);
     }
 
     List<String> getLeaders() {
@@ -61,6 +61,9 @@ public class Study {
     boolean removeDetail(String detail) {
         for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
             if (e.html().equals(detail)) {
+                if (e.hasClass("\"whenandwhere\"")) {
+                    setWhenAndWhere("");
+                }
                 e.remove();
             }
         }

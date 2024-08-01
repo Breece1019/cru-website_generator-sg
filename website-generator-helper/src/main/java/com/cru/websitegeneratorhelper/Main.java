@@ -68,7 +68,7 @@ public class Main extends Application {
 
     private Scene setEditScene(Model model) {
         // fill Edit window (2nd window) with its functions
-        
+
         BorderPane editLayout = new BorderPane();
         HBox bottomButtons = setEditBottom(model);
 
@@ -88,7 +88,7 @@ public class Main extends Application {
         VBox treeLayout = new VBox(tree, inputBox);
         VBox.setVgrow(tree, Priority.ALWAYS);
 
-        // Event handling for "/" key to show input box
+        // Event handling for "/" to show input box and "ESC" to deselect item
         tree.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SLASH && tree.getSelectionModel().getSelectedItem() != null) {
                 TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
@@ -100,6 +100,8 @@ public class Main extends Application {
                     userInputField.requestFocus();
                     userInputField.selectAll(); // Select all text so user can start typing immediately
                 });
+            } if (event.getCode() == KeyCode.ESCAPE) {
+                tree.getSelectionModel().clearSelection();  // removes what is selected
             }
         });
 
@@ -167,21 +169,32 @@ public class Main extends Application {
 
         addButton.setOnAction(event -> {
             TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
+            String newString = "";
+
+            if (selectedItem != null) { // Study or Detail
                 switch (getHeight(selectedItem)) {
-                    case 1: // Region
-                        
+                    case 1: // Study
+                        newString = "New Study";
+                        model.getRegion(selectedItem.getValue()).addStudy(newString);
                         break;
-                    case 2: // Study
-                        
-                        break;
-                    case 3: // Detail
-                        
+                    case 2: // Detail
+                    case 3: // Detail TODO add whenandwhere
+                        newString = "New Leader";
+                        Study study = model.getRegion(
+                            selectedItem.getParent().getParent().getValue())
+                            .getStudy(selectedItem.getParent().getValue());
+
+                        study.addLeader(newString);
+
                         break;
                     default:
                 }
-                selectedItem.getParent().getChildren().remove(selectedItem);
+                
+            } else {    // new region
+                newString = "New Region";
+                model.addRegion(newString);
             }
+            selectedItem.getChildren().add(new TreeItem<>(newString));
         });
 
         removeButton.setOnAction(event -> {

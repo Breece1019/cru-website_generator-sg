@@ -39,5 +39,8 @@ modification. When you are finished with all your changes, press the
 Highlight an item and press the `Remove` button in the window to remove that
 item and any of its related children.
 
+Highlight an item and press the `Add` button in the window to add a child
+into that item.
+
 ***NOTE:*** The **Up Arrow** and **Down Arrow** currently serve no
 real function, so ignore them for now.

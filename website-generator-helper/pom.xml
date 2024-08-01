@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <jsoup.version>1.17.2</jsoup.version>
         <project.encoding>UTF-8</project.encoding>
         <javafx.version>21</javafx.version>
@@ -83,7 +83,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.cru.websitegeneratorhelper.Main</mainClass> <!-- Update with your main class -->
+                    <mainClass>com.cru.websitegeneratorhelper.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -116,7 +116,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.cru.websitegeneratorhelper.Main</mainClass> <!-- Update with your main class -->
+                    <mainClass>com.cru.websitegeneratorhelper.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

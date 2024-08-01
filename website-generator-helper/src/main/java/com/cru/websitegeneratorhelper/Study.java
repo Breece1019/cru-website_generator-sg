@@ -18,7 +18,14 @@ public class Study {
         this.doc = doc;
         this.name = root.selectFirst("dt").text();
         Element temp = root.selectFirst("dd[class=\"whenandwhere\"]");
-        this.whenAndWhere = (temp != null) ? temp.text() : "Please email for more info";
+        if (temp == null) {
+            this.whenAndWhere = "- Please email for more info";
+            this.doc.selectFirst(this.root.cssSelector()).appendChild(
+                new Element("dd").addClass("whenandwhere")
+                .text(this.whenAndWhere));
+        } else {
+            this.whenAndWhere = temp.text();
+        }
         leaders = new ArrayList<>();
         for (Element leader : root.select("dd[class=\"leader\"]")) {
             // System.out.println("DEBUG: " + leader.html());
@@ -45,7 +52,7 @@ public class Study {
 
     void setWhenAndWhere(String waw) {
         this.whenAndWhere = waw;
-        doc.selectFirst(this.root.cssSelector()).selectFirst("dd[class\"whenandwhere\"]").text(waw);
+        doc.selectFirst(this.root.cssSelector()).selectFirst("dd[class=\"whenandwhere\"]").text(waw);
     }
 
     List<String> getLeaders() {
@@ -54,13 +61,16 @@ public class Study {
 
     void addLeader(String leader) {
         this.leaders.add(leader);
-        Element newLeader = new Element("dd").addClass("leader").text(leader);
+        Element newLeader = new Element("dd").addClass("leader").append(leader);
         this.doc.selectFirst(this.root.cssSelector()).appendChild(newLeader);
     }
 
     boolean removeDetail(String detail) {
         for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
             if (e.html().equals(detail)) {
+                if (e.hasClass("\"whenandwhere\"")) {
+                    setWhenAndWhere("");
+                }
                 e.remove();
             }
         }

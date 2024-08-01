@@ -36,5 +36,11 @@ update the item. If you want to cancel your changes, press `ESC` to stop the
 modification. When you are finished with all your changes, press the
 `Generate` button in the bottom-right corner to save the file.
 
-***NOTE:*** The **Add**, **Remove**, **Up Arrow**, and **Down Arrow** currently serve no
+Highlight an item and press the `Remove` button in the window to remove that
+item and any of its related children.
+
+Highlight an item and press the `Add` button in the window to add a child
+into that item.
+
+***NOTE:*** The **Up Arrow** and **Down Arrow** currently serve no
 real function, so ignore them for now.

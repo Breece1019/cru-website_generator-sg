@@ -32,6 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // initialize load window
         this.window = primaryStage;
         window.setTitle("Cru Website Generator");
         window.getIcons().add(new Image("file:data/cru-logo.png"));
@@ -41,6 +42,7 @@ public class Main extends Application {
     }
 
     private Scene setLoadScene() {
+        // fill Load window (1st window) with its function
         StackPane loadLayout = new StackPane();
         Button loadButton = new Button("Load File");
         loadButton.setPrefSize(150, 70);
@@ -65,6 +67,8 @@ public class Main extends Application {
     }
 
     private Scene setEditScene(Model model) {
+        // fill Edit window (2nd window) with its functions
+
         BorderPane editLayout = new BorderPane();
         HBox bottomButtons = setEditBottom(model);
 
@@ -84,7 +88,7 @@ public class Main extends Application {
         VBox treeLayout = new VBox(tree, inputBox);
         VBox.setVgrow(tree, Priority.ALWAYS);
 
-        // Event handling for "/" key to show input box
+        // Event handling for "/" to show input box and "ESC" to deselect item
         tree.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SLASH && tree.getSelectionModel().getSelectedItem() != null) {
                 TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
@@ -96,6 +100,8 @@ public class Main extends Application {
                     userInputField.requestFocus();
                     userInputField.selectAll(); // Select all text so user can start typing immediately
                 });
+            } if (event.getCode() == KeyCode.ESCAPE) {
+                tree.getSelectionModel().clearSelection();  // removes what is selected
             }
         });
 
@@ -160,6 +166,51 @@ public class Main extends Application {
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         cancelButton.setOnAction(event -> window.setScene(loadScene));
         generateButton.setOnAction(event -> outputFile(model));
+
+        addButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            String newString = "";
+
+            if (selectedItem != null) { // Study or Detail
+                int height = getHeight(selectedItem);
+                Study study;
+                switch (height) {
+                    case 1: // Study
+                        newString = "New Study";
+                        study = model.getRegion(selectedItem.getValue()).addStudy(newString);
+                        TreeItem<String> ti = new TreeItem<>(newString);
+                        ti.getChildren().add(new TreeItem<>(study.getWhenAndWhere()));
+
+                        selectedItem.getChildren().add(ti);
+                         // auto append when and where
+                        break;
+                    case 2: // Detail
+                        newString = "- New Leader <a href=\"mailto:example@osu.edu\">example@osu.edu</a>";
+                        study = model.getRegion(selectedItem.getParent().getValue())
+                        .getStudy(selectedItem.getValue());
+
+                        study.addLeader(newString);
+
+                        selectedItem.getChildren().add(new TreeItem<>(newString));
+                        break;
+                    case 3: // Detail
+                        newString = "- New Leader <a href=\"mailto:example@osu.edu\">example@osu.edu</a>";
+                        study = model.getRegion(selectedItem.getParent().getParent().getValue())
+                            .getStudy(selectedItem.getParent().getValue());
+
+                        study.addLeader(newString);
+
+                        selectedItem.getParent().getChildren().add(new TreeItem<>(newString));
+                        break;
+                    default:
+                }
+                selectedItem.setExpanded(true);
+            } else {    // new region
+                newString = "New Region";
+                model.addRegion(newString);
+                model.getTreeView().getRoot().getChildren().add(new TreeItem<>(newString));
+            }
+        });
 
         removeButton.setOnAction(event -> {
             TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();

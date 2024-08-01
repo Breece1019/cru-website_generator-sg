@@ -92,6 +92,23 @@ public class Model {
         regionList.put(regionName, new Region(newRegion, this.doc));
     }
 
+
+    void moveRegionUp(Region r) {
+        Element currEl = this.doc.selectFirst("div.panel.panel-default:contains(" + r.getName() + ")");
+        Element lastEl = currEl.previousElementSibling();
+        if (lastEl != null) {
+            lastEl.before(currEl);
+        }
+    }
+
+    void moveRegionDown(Region r) {
+        Element currEl = this.doc.selectFirst("div.panel.panel-default:contains(" + r.getName() + ")");
+        Element nextEl = currEl.nextElementSibling();
+        if (nextEl != null) {
+            nextEl.after(currEl);
+        }
+    }
+
     void moveRegionXbeforeY(Region X, Region Y) {
         this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(this.doc.selectFirst(X.cssSelector()));
     }

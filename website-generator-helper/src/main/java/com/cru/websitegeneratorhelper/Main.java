@@ -255,10 +255,16 @@ public class Main extends Application {
             if (selectedItem != null) {
                 int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
                 if (i > 0) {
+                    switch (getHeight(selectedItem)) {
+                        case 1:
+                            model.moveRegionUp(model.getRegion(selectedItem.getValue()));
+                            break;
+                        default:
+                            break;
+                    }
                     Collections.swap(selectedItem.getParent().getChildren(), i, i - 1);
                     model.getTreeView().getSelectionModel().select(selectedItem);
                 }
-                
             }
         });
 
@@ -267,10 +273,17 @@ public class Main extends Application {
             if (selectedItem != null) {
                 int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
                 if (i < selectedItem.getParent().getChildren().size() - 1) {
+                    switch (getHeight(selectedItem)) {
+                        case 1:
+                            model.moveRegionDown(model.getRegion(selectedItem.getValue()));
+                            break;
+                        default:
+                            break;
+                    }
+
                     Collections.swap(selectedItem.getParent().getChildren(), i, i + 1);
                     model.getTreeView().getSelectionModel().select(selectedItem);
                 }
-                
             }
         });
 

@@ -58,13 +58,9 @@ public class Study {
         this.doc.selectFirst(this.root.cssSelector()).appendChild(newLeader);
     }
 
-    //TODO
     boolean removeDetail(String detail) {
-        int i = 0;
-
         for (Element e : doc.selectFirst(this.root.cssSelector()).select("dd")) {
-            System.out.println(i++ + e.html());
-            if (e.text().equals(detail)) {
+            if (e.html().equals(detail)) {
                 e.remove();
             }
         }

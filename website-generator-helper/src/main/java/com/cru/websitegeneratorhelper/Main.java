@@ -177,7 +177,7 @@ public class Main extends Application {
                         model.getRegion(selectedItem.getParent().getValue())
                             .removeStudy(selectedItem.getValue());
                         break;
-                    case 3: // Detail TODO
+                    case 3: // Detail
                         model.getRegion(selectedItem.getParent().getParent().getValue())
                             .getStudy(selectedItem.getParent().getValue())
                             .removeDetail(selectedItem.getValue());

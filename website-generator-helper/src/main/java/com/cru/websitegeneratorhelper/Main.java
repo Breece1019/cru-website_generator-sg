@@ -117,11 +117,6 @@ public class Main extends Application {
                         model.getRegion(selectedItem.getParent().getParent().getValue())
                             .getStudy(selectedItem.getParent().getValue())
                             .changeDetail(selectedItem.getValue(), userInputField.getText());
-                        // model.changeDetail(
-                        //     selectedItem.getValue(),
-                        //     userInputField.getText(),
-                        //     selectedItem.getParent().getValue(),
-                        //     selectedItem.getParent().getParent().getValue());
                         break;
                     default:
 

@@ -259,6 +259,12 @@ public class Main extends Application {
                         case 1:
                             model.moveRegionUp(model.getRegion(selectedItem.getValue()));
                             break;
+                        case 2:
+                            Study s = model.getRegion(selectedItem.getParent().getValue())
+                                .getStudy(selectedItem.getValue());
+                            model.getRegion(selectedItem.getParent().getValue())
+                                .moveStudyUp(s);
+                            break;
                         default:
                             break;
                     }
@@ -276,6 +282,12 @@ public class Main extends Application {
                     switch (getHeight(selectedItem)) {
                         case 1:
                             model.moveRegionDown(model.getRegion(selectedItem.getValue()));
+                            break;
+                        case 2:
+                            Study s = model.getRegion(selectedItem.getParent().getValue())
+                                .getStudy(selectedItem.getValue());
+                            model.getRegion(selectedItem.getParent().getValue())
+                                .moveStudyDown(s);
                             break;
                         default:
                             break;

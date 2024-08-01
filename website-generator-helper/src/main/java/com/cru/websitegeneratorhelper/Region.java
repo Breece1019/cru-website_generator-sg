@@ -66,4 +66,20 @@ public class Region {
         this.studies.remove(oldName);
         this.studies.put(newName, study);
     }
+
+    void moveStudyUp(Study s) {
+        Element currEl = this.root.selectFirst("div.study:contains(" + s.getName() + ")");
+        Element lastEl = currEl.previousElementSibling();
+        if (lastEl != null) {
+            lastEl.before(currEl);
+        }
+    }
+
+    void moveStudyDown(Study s) {
+        Element currEl = this.root.selectFirst("div.study:contains(" + s.getName() + ")");
+        Element nextEl = currEl.nextElementSibling();
+        if (nextEl != null) {
+            nextEl.after(currEl);
+        }
+    }
 }

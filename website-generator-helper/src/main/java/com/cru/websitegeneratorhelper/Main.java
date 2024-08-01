@@ -32,6 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // initialize load window
         this.window = primaryStage;
         window.setTitle("Cru Website Generator");
         window.getIcons().add(new Image("file:data/cru-logo.png"));
@@ -41,6 +42,7 @@ public class Main extends Application {
     }
 
     private Scene setLoadScene() {
+        // fill Load window (1st window) with its function
         StackPane loadLayout = new StackPane();
         Button loadButton = new Button("Load File");
         loadButton.setPrefSize(150, 70);
@@ -65,6 +67,8 @@ public class Main extends Application {
     }
 
     private Scene setEditScene(Model model) {
+        // fill Edit window (2nd window) with its functions
+        
         BorderPane editLayout = new BorderPane();
         HBox bottomButtons = setEditBottom(model);
 
@@ -160,6 +164,25 @@ public class Main extends Application {
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         cancelButton.setOnAction(event -> window.setScene(loadScene));
         generateButton.setOnAction(event -> outputFile(model));
+
+        addButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                switch (getHeight(selectedItem)) {
+                    case 1: // Region
+                        
+                        break;
+                    case 2: // Study
+                        
+                        break;
+                    case 3: // Detail
+                        
+                        break;
+                    default:
+                }
+                selectedItem.getParent().getChildren().remove(selectedItem);
+            }
+        });
 
         removeButton.setOnAction(event -> {
             TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();

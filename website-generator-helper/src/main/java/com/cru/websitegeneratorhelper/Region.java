@@ -2,7 +2,6 @@ package com.cru.websitegeneratorhelper;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,11 +42,13 @@ public class Region {
         this.studies.put(study.getName(), study);
     }
 
-    void addStudy(String studyName) {
+    Study addStudy(String studyName) {
         String html = "<div class=\"study\"><dt><h3>" + studyName + "</h3></dt></div>";
         Element e = Jsoup.parseBodyFragment(html, "UTF-8").selectFirst("div[class=\"study\"]");
         this.doc.selectFirst(this.root.cssSelector()).selectFirst("dl").appendChild(e);
         this.studies.put(studyName, new Study(e, doc));
+
+        return this.studies.get(studyName);
     }
 
     Study removeStudy(String studyName) {

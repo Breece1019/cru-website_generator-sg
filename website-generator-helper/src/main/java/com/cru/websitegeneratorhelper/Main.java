@@ -172,29 +172,44 @@ public class Main extends Application {
             String newString = "";
 
             if (selectedItem != null) { // Study or Detail
-                switch (getHeight(selectedItem)) {
+                int height = getHeight(selectedItem);
+                Study study;
+                switch (height) {
                     case 1: // Study
                         newString = "New Study";
-                        model.getRegion(selectedItem.getValue()).addStudy(newString);
+                        study = model.getRegion(selectedItem.getValue()).addStudy(newString);
+                        TreeItem<String> ti = new TreeItem<>(newString);
+                        ti.getChildren().add(new TreeItem<>(study.getWhenAndWhere()));
+
+                        selectedItem.getChildren().add(ti);
+                         // auto append when and where
                         break;
                     case 2: // Detail
+                        newString = "- New Leader <a href=\"mailto:example@osu.edu\">example@osu.edu</a>";
+                        study = model.getRegion(selectedItem.getParent().getValue())
+                        .getStudy(selectedItem.getValue());
+
+                        study.addLeader(newString);
+
+                        selectedItem.getChildren().add(new TreeItem<>(newString));
+                        break;
                     case 3: // Detail TODO add whenandwhere
-                        newString = "New Leader";
-                        Study study = model.getRegion(
-                            selectedItem.getParent().getParent().getValue())
+                        newString = "- New Leader <a href=\"mailto:example@osu.edu\">example@osu.edu</a>";
+                        study = model.getRegion(selectedItem.getParent().getParent().getValue())
                             .getStudy(selectedItem.getParent().getValue());
 
                         study.addLeader(newString);
 
+                        selectedItem.getParent().getChildren().add(new TreeItem<>(newString));
                         break;
                     default:
                 }
-                
+                selectedItem.setExpanded(true);
             } else {    // new region
                 newString = "New Region";
                 model.addRegion(newString);
+                model.getTreeView().getRoot().getChildren().add(new TreeItem<>(newString));
             }
-            selectedItem.getChildren().add(new TreeItem<>(newString));
         });
 
         removeButton.setOnAction(event -> {

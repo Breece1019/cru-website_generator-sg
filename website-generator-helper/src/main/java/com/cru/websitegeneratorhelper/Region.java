@@ -30,10 +30,6 @@ public class Region {
         return this.studies.get(studyName);
     }
 
-    Set<String> getStudyNames() {
-        return this.studies.keySet();
-    }
-
     String getName() {
         return this.name;
     }

@@ -109,17 +109,19 @@ public class Main extends Application {
                             userInputField.getText());
                         break;
                     case 2: // Study
-                        model.renameStudy(
-                            selectedItem.getValue(),
-                            userInputField.getText(),
-                            selectedItem.getParent().getValue());
+                        model.getRegion(selectedItem.getParent().getValue())
+                            .renameStudy(selectedItem.getValue(),
+                            userInputField.getText());
                         break;
                     case 3: // Detail
-                        model.changeDetail(
-                            selectedItem.getValue(),
-                            userInputField.getText(),
-                            selectedItem.getParent().getValue(),
-                            selectedItem.getParent().getParent().getValue());
+                        model.getRegion(selectedItem.getParent().getParent().getValue())
+                            .getStudy(selectedItem.getParent().getValue())
+                            .changeDetail(selectedItem.getValue(), userInputField.getText());
+                        // model.changeDetail(
+                        //     selectedItem.getValue(),
+                        //     userInputField.getText(),
+                        //     selectedItem.getParent().getValue(),
+                        //     selectedItem.getParent().getParent().getValue());
                         break;
                     default:
 
@@ -173,12 +175,12 @@ public class Main extends Application {
                         break;
                     case 2: // Study
                         model.getRegion(selectedItem.getParent().getValue())
-                        .removeStudy(selectedItem.getValue());
+                            .removeStudy(selectedItem.getValue());
                         break;
                     case 3: // Detail TODO
-                        // model.getRegion(selectedItem.getParent().getParent().getValue())
-                        // .getStudy(selectedItem.getParent().getValue())
-                        // .removeDetail(selectedItem.getValue());
+                        model.getRegion(selectedItem.getParent().getParent().getValue())
+                            .getStudy(selectedItem.getParent().getValue())
+                            .removeDetail(selectedItem.getValue());
                         break;
                     default:
                 }

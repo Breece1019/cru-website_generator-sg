@@ -67,19 +67,11 @@ public class Model {
         return this.doc.outerHtml();
     }
 
-    Set<String> getRegionNames() {
-        return this.regionList.keySet();
-    }
-
     Region getRegion(String name) {
         return regionList.get(name);
     }
 
-    Set<String> getStudyNames(String regionName) {
-        return this.regionList.get(regionName).getStudyNames();
-    }
-
-    List<String> getDetails(String studyName, String regionName) {
+    private List<String> getDetails(String studyName, String regionName) {
         List<String> details = new ArrayList<>();
         details.add(this.regionList.get(regionName).getStudy(studyName).getWhenAndWhere());
         for (String leader : this.regionList.get(regionName).getStudy(studyName).getLeaders()) {
@@ -127,16 +119,6 @@ public class Model {
         Region region = this.regionList.get(regionName);
         if (region != null) {
             region.renameStudy(oldName, newName);
-        }
-    }
-
-    void changeDetail(String oldDetail, String newDetail, String studyName, String regionName) {
-        Region region = this.regionList.get(regionName);
-        if (region != null) {
-            Study study = region.getStudy(studyName);
-            if (study != null) {
-                study.changeDetail(oldDetail, newDetail);
-            }
         }
     }
 

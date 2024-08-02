@@ -20,8 +20,8 @@ To build into a package:
 * maybe `mvn clean package`
 * `mvn javafx:jlink`
 * For Windows: `jpackage --input target/ --name CruWebsiteHelper --main-jar website-generator-helper-1.0-SNAPSHOT.jar --main-class com.cru.websitegeneratorhelper.Main --type msi --dest output/ --runtime-image target/image --icon data/cru-logo.ico`
-* For Mac, change --type to dmg
-* For Linux, change --type to deb or rpm (deb tested and working)
+* For Mac, change --type to dmg and --icon to data/cru-logo.icns
+* For Linux, change --type to deb or rpm (deb tested and working) and --icon to data/cru-logo.png
 
 ## Features
 You can currently use this application to modify existing study information.

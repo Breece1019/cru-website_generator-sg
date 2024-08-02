@@ -13,7 +13,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <jsoup.version>1.17.2</jsoup.version>
         <project.encoding>UTF-8</project.encoding>
-        <javafx.version>21</javafx.version>
+        <javafx.version>12.0.2</javafx.version>
     </properties>
 
     <dependencies>

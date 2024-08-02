@@ -16,6 +16,12 @@ Run this list of commands on your machine to start the project:
 
 This should be all you need to do to get the project running!
 
+To build into a package:
+* `mvn javafx:jlink`
+* `jpackage --input target/ --name CruWebsiteHelper --main-jar website-generator-helper-1.0-SNAPSHOT.jar --main-class com.cru.websitegeneratorhelper.Main --type msi --dest output/ --runtime-image target/image`
+
+This is for Windows, but you can configure jpackage to work for Mac as well.
+
 ## Features
 You can currently use this application to modify existing study information.
 You cannot yet add or remove studies, nor can you change the order of studies.

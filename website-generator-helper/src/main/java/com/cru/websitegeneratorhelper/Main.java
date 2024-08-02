@@ -36,7 +36,7 @@ public class Main extends Application {
         // initialize load window
         this.window = primaryStage;
         window.setTitle("Cru Website Generator");
-        window.getIcons().add(new Image("file:data/cru-logo.png"));
+        window.getIcons().add(new Image(getClass().getResource("/data/cru-logo.png").toExternalForm()));
         loadScene = setLoadScene();
         window.setScene(loadScene);
         window.show();

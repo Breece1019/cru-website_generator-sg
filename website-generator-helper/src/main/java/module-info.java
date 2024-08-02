@@ -4,6 +4,6 @@ module com.cru.websitegeneratorhelper {
     requires transitive javafx.graphics;
     requires org.jsoup;
 
-    opens com.cru.websitegeneratorhelper to java.fxml;
+    opens com.cru.websitegeneratorhelper to javafx.fxml;
     exports com.cru.websitegeneratorhelper;
 }

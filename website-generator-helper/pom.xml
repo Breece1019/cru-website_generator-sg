@@ -48,6 +48,17 @@
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/data</directory>
+                <includes>
+                    <include>**/*.png</include>
+                </includes>
+                <targetPath>data</targetPath>
+            </resource>
+        </resources>
+
         <plugins>
             <!-- Compiler Plugin Configuration -->
             <plugin>
@@ -83,7 +94,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.cru.websitegeneratorhelper.Main</mainClass>
+                    <mainClass>com.cru.websitegeneratorhelper/com.cru.websitegeneratorhelper.Main</mainClass>
                 </configuration>
             </plugin>
 

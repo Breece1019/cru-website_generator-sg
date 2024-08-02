@@ -17,6 +17,7 @@ Run this list of commands on your machine to start the project:
 This should be all you need to do to get the project running!
 
 To build into a package:
+* maybe `mvn clean package`
 * `mvn javafx:jlink`
 * `jpackage --input target/ --name CruWebsiteHelper --main-jar website-generator-helper-1.0-SNAPSHOT.jar --main-class com.cru.websitegeneratorhelper.Main --type msi --dest output/ --runtime-image target/image`
 

@@ -265,6 +265,11 @@ public class Main extends Application {
                             model.getRegion(selectedItem.getParent().getValue())
                                 .moveStudyUp(s);
                             break;
+                        case 3:
+                            Study st = model.getRegion(selectedItem.getParent().getParent().getValue())
+                                .getStudy(selectedItem.getParent().getValue());
+                            st.moveDetailUp(selectedItem.getValue());
+                            break;
                         default:
                             break;
                     }
@@ -288,6 +293,11 @@ public class Main extends Application {
                                 .getStudy(selectedItem.getValue());
                             model.getRegion(selectedItem.getParent().getValue())
                                 .moveStudyDown(s);
+                            break;
+                        case 3:
+                            Study st = model.getRegion(selectedItem.getParent().getParent().getValue())
+                                .getStudy(selectedItem.getParent().getValue());
+                            st.moveDetailDown(selectedItem.getValue());
                             break;
                         default:
                             break;

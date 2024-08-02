@@ -3,6 +3,7 @@ package com.cru.websitegeneratorhelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -28,17 +29,12 @@ public class Study {
         }
         leaders = new ArrayList<>();
         for (Element leader : root.select("dd[class=\"leader\"]")) {
-            // System.out.println("DEBUG: " + leader.html());
             leaders.add(leader.html());
         }
     }
 
     String getName() {
         return this.name;
-    }
-
-    String cssSelector() {
-        return root.cssSelector();
     }
 
     void setName(String newName) {
@@ -82,6 +78,34 @@ public class Study {
             if (e.html().contains(oldDetail)) {
                 e.text("").append(newDetail);
             }
+        }
+    }
+
+    void moveDetailUp(String str) {
+        Element currEl = null;
+        Element prevEl = null;
+        for (Element el : this.root.select("dd")) {
+            if (el.html().trim().equals(str)) {
+                currEl = el;
+                prevEl = currEl.previousElementSibling();
+            }
+        }
+        if (prevEl != null) {
+            prevEl.before(currEl);
+        }
+    }
+
+    void moveDetailDown(String str) {
+        Element currEl = null;
+        Element nextEl = null;
+        for (Element el : this.root.select("dd")) {
+            if (el.html().trim().equals(str)) {
+                currEl = el;
+                nextEl = currEl.nextElementSibling();
+            }
+        }
+        if (nextEl != null) {
+            nextEl.after(currEl);
         }
     }
 }

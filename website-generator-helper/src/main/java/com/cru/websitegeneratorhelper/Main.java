@@ -3,6 +3,7 @@ package com.cru.websitegeneratorhelper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -249,6 +250,64 @@ public class Main extends Application {
         upButton.setPrefSize(50, 150);
         downButton.setPrefSize(50, 150);
 
+        upButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
+                if (i > 0) {
+                    switch (getHeight(selectedItem)) {
+                        case 1:
+                            model.moveRegionUp(model.getRegion(selectedItem.getValue()));
+                            break;
+                        case 2:
+                            Study s = model.getRegion(selectedItem.getParent().getValue())
+                                .getStudy(selectedItem.getValue());
+                            model.getRegion(selectedItem.getParent().getValue())
+                                .moveStudyUp(s);
+                            break;
+                        case 3:
+                            Study st = model.getRegion(selectedItem.getParent().getParent().getValue())
+                                .getStudy(selectedItem.getParent().getValue());
+                            st.moveDetailUp(selectedItem.getValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    Collections.swap(selectedItem.getParent().getChildren(), i, i - 1);
+                    model.getTreeView().getSelectionModel().select(selectedItem);
+                }
+            }
+        });
+
+        downButton.setOnAction(event -> {
+            TreeItem<String> selectedItem = model.getTreeView().getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
+                if (i < selectedItem.getParent().getChildren().size() - 1) {
+                    switch (getHeight(selectedItem)) {
+                        case 1:
+                            model.moveRegionDown(model.getRegion(selectedItem.getValue()));
+                            break;
+                        case 2:
+                            Study s = model.getRegion(selectedItem.getParent().getValue())
+                                .getStudy(selectedItem.getValue());
+                            model.getRegion(selectedItem.getParent().getValue())
+                                .moveStudyDown(s);
+                            break;
+                        case 3:
+                            Study st = model.getRegion(selectedItem.getParent().getParent().getValue())
+                                .getStudy(selectedItem.getParent().getValue());
+                            st.moveDetailDown(selectedItem.getValue());
+                            break;
+                        default:
+                            break;
+                    }
+
+                    Collections.swap(selectedItem.getParent().getChildren(), i, i + 1);
+                    model.getTreeView().getSelectionModel().select(selectedItem);
+                }
+            }
+        });
 
         editLayoutLeft.setPadding(new Insets(10));
         editLayoutLeft.getChildren().addAll(upButton, downButton);
@@ -264,7 +323,6 @@ public class Main extends Application {
         fileChooser.setTitle("Save");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Downloads"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML Files", "*.html"));
-        model.fixCollapseIDs();
         File output = fileChooser.showSaveDialog(window);
         if (output != null) {
             try {

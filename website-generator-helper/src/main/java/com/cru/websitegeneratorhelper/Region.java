@@ -60,18 +60,26 @@ public class Region {
         return this.studies.remove(studyName);
     }
 
-    void moveStudyXbeforeY(Study X, Study Y) {
-        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").before(this.doc.selectFirst(X.cssSelector()));
-    }
-
-    void moveStudyXafterY(Study X, Study Y) {
-        this.doc.selectFirst("div.panel.panel-default:contains(" + Y.getName() + ")").after(this.doc.selectFirst(X.cssSelector()));
-    }
-
     void renameStudy(String oldName, String newName) {
         Study study = this.studies.get(oldName);
         study.setName(newName);
         this.studies.remove(oldName);
         this.studies.put(newName, study);
+    }
+
+    void moveStudyUp(Study s) {
+        Element currEl = this.root.selectFirst("div.study:contains(" + s.getName() + ")");
+        Element lastEl = currEl.previousElementSibling();
+        if (lastEl != null) {
+            lastEl.before(currEl);
+        }
+    }
+
+    void moveStudyDown(Study s) {
+        Element currEl = this.root.selectFirst("div.study:contains(" + s.getName() + ")");
+        Element nextEl = currEl.nextElementSibling();
+        if (nextEl != null) {
+            nextEl.after(currEl);
+        }
     }
 }

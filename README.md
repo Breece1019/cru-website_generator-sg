@@ -42,5 +42,5 @@ item and any of its related children.
 Highlight an item and press the `Add` button in the window to add a child
 into that item.
 
-***NOTE:*** The **Up Arrow** and **Down Arrow** currently serve no
-real function, so ignore them for now.
+Highlight an item and press the `Up Arrow` or `Down Arrow` buttons in the
+window to reposition an element.

@@ -45,9 +45,10 @@ public class Main extends Application {
     private Scene setLoadScene() {
         // fill Load window (1st window) with its function
         StackPane loadLayout = new StackPane();
+        loadLayout.setStyle("-fx-font-family: Arial; -fx-font-size: 24px;");
         Button loadButton = new Button("Load File");
         loadButton.setPrefSize(150, 70);
-        loadButton.setStyle("-fx-font-size: 24px;");
+        loadButton.setStyle("-fx-font-family: Arial; -fx-font-size: 24px;");
         loadButton.setOnAction(event -> loadAndProcessFile(window));
         loadLayout.getChildren().add(loadButton);
         
@@ -72,6 +73,7 @@ public class Main extends Application {
 
         BorderPane editLayout = new BorderPane();
         HBox bottomButtons = setEditBottom(model);
+        editLayout.setStyle("-fx-font-family: Arial; -fx-font-size: 24px;");
 
         // Set up tree to be editable
         TreeView<String> tree = model.getTreeView();

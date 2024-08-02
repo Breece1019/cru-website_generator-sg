@@ -19,9 +19,9 @@ This should be all you need to do to get the project running!
 To build into a package:
 * maybe `mvn clean package`
 * `mvn javafx:jlink`
-* `jpackage --input target/ --name CruWebsiteHelper --main-jar website-generator-helper-1.0-SNAPSHOT.jar --main-class com.cru.websitegeneratorhelper.Main --type msi --dest output/ --runtime-image target/image`
-
-This is for Windows, but you can configure jpackage to work for Mac as well.
+* For Windows: `jpackage --input target/ --name CruWebsiteHelper --main-jar website-generator-helper-1.0-SNAPSHOT.jar --main-class com.cru.websitegeneratorhelper.Main --type msi --dest output/ --runtime-image target/image --icon data/cru-logo.ico`
+* For Mac, change --type to dmg
+* For Linux, change --type to deb or rpm (deb tested and working)
 
 ## Features
 You can currently use this application to modify existing study information.

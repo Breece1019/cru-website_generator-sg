@@ -1,4 +1,0 @@
---patch-module
-com.cru.websitegeneratorhelper=_
---add-reads
-com.cru.websitegeneratorhelper=ALL-UNNAMED
